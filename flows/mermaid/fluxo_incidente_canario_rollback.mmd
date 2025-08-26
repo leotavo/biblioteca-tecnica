@@ -1,0 +1,6 @@
+flowchart TD
+  A[Planejar canário] --> B[Implantar parcial]
+  B --> C[Monitorar métricas]
+  C --> D{Go/No-Go}
+  D -- No-Go --> E[Rollback]
+  D -- Go --> F[Rollout completo]

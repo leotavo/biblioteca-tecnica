@@ -1,0 +1,14 @@
+id: "<slug-unico>"
+version: "1.0.0"
+owner: "<nome|time>"
+theme: "<refatoracao|plataforma_ci|sre>"
+title: "<titulo curto>"
+objective: "<uma frase>"
+inputs: []
+outputs: []
+acceptance: []
+steps: []
+metadata:
+  tags: []
+  sla_minutes: 60
+  risk_level: "M"

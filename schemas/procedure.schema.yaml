@@ -1,0 +1,47 @@
+type: object
+required: [id, version, owner, theme, title, objective, steps]
+properties:
+  id: { type: string }
+  version: { type: string }
+  owner: { type: string }
+  theme: { type: string }
+  title: { type: string }
+  objective: { type: string }
+  inputs:
+    type: array
+    items:
+      type: object
+      properties:
+        name: { type: string }
+        type: { type: string }
+  outputs:
+    type: array
+    items:
+      type: object
+      properties:
+        name: { type: string }
+        type: { type: string }
+  acceptance:
+    type: array
+    items: { type: string }
+  steps:
+    type: array
+    items:
+      type: object
+      required: [id, name, description]
+      properties:
+        id: { type: string }
+        name: { type: string }
+        description: { type: string }
+        evidence:
+          type: object
+          properties:
+            path: { type: string }
+            type: { type: string }
+        rollback: { type: string }
+  metadata:
+    type: object
+    properties:
+      tags: { type: array, items: { type: string } }
+      sla_minutes: { type: number }
+      risk_level: { type: string }

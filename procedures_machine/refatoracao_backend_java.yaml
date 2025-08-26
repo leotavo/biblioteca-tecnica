@@ -1,0 +1,33 @@
+id: "refatoracao-backend-java"
+version: "1.0.0"
+owner: "owner@exemplo"
+theme: "refatoracao"
+title: "Refatoração Backend (Java)"
+objective: "Execução replicável com evidências e critérios de aceite."
+inputs:
+  - name: "artefato_principal"
+    type: "file"
+outputs:
+  - name: "relatorio"
+    type: "report"
+acceptance:
+  - "Critérios atendidos e evidências salvas"
+steps:
+  - id: "step-1"
+    name: "Preparar"
+    description: "Coletar baseline e definir critérios"
+    evidence:
+      path: "evidence/refatoracao/<case>/baseline.json"
+      type: "json"
+    rollback: "Abortar execução e registrar motivo"
+  - id: "step-2"
+    name: "Executar"
+    description: "Aplicar procedimento e monitorar métricas"
+    evidence:
+      path: "evidence/refatoracao/<case>/resultado.md"
+      type: "md"
+    rollback: "Reverter mudanças e restaurar baseline"
+metadata:
+  tags: ["repetivel","auditavel"]
+  sla_minutes: 60
+  risk_level: "M"

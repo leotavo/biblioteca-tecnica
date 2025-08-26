@@ -1,0 +1,6 @@
+flowchart TD
+  A[Definir regras] --> B[Configurar CI]
+  B --> C[Executar checks]
+  C --> D{Gate aprovado?}
+  D -- Não --> E[Corrigir]
+  D -- Sim --> F[Merge]

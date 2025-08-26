@@ -1,0 +1,7 @@
+stages: [collect]
+collect:evidence:
+  stage: collect
+  script:
+    - echo "Colete evidências conforme caminhos em procedures_machine/*"
+  rules:
+    - when: manual

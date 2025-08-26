@@ -1,0 +1,9 @@
+stages: [validate]
+validate:procedures:
+  stage: validate
+  script:
+    - echo "Validando estrutura YAML (exemplo simplificado)"
+    - test -n "$(ls -1 procedures_machine/*.yaml 2>/dev/null)" || (echo "Nenhum YAML encontrado" && exit 1)
+  rules:
+    - changes:
+        - procedures_machine/*.yaml
