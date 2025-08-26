@@ -1,0 +1,88 @@
+id: refatoracao_otimizacao_query_validacao_frontend
+version: 1.0
+owner: Leonardo Trindade
+theme: refatoracao
+title: Otimização de Query — Validação Funcional e Métrica no Frontend
+objective: Garantir paridade funcional e melhoria de performance observável no frontend após otimização de consulta.
+inputs:
+  - Case/ticket da otimização (<case>)
+  - Endpoint(s) afetados (<endpoint>)
+  - Página/tela do frontend (<pagina>)
+  - Query baseline e versão otimizada (flagável)
+outputs:
+  - Evidências de paridade funcional (diffs zero)
+  - Sumário de performance (API e frontend) baseline vs otimizada
+  - Decisão Go/No-Go com plano de rollout/rollback
+acceptance:
+  - Paridade 100% no payload e comportamento (ordem, filtros, paginação)
+  - API p95 <= -20% vs baseline e erro% <= baseline
+  - Frontend LCP/tempo até dados visíveis <= -10% e interações críticas <= -15%
+  - Plano de rollback documentado e testável
+steps:
+  - id: s1
+    name: Fixar baseline
+    description: Coletar métricas atuais de API e frontend antes da otimização
+    evidence:
+      path: evidence/refatoracao/<case>/baseline/
+      type: folder
+    rollback: N/A
+  - id: s2
+    name: Congelar cenário de dados
+    description: Definir dataset/params fixos para comparação determinística
+    evidence:
+      path: evidence/refatoracao/<case>/dataset/contexto.md
+      type: markdown
+    rollback: N/A
+  - id: s3
+    name: Habilitar execução lado a lado
+    description: Usar feature flag/parâmetro para alternar baseline vs otimizada em homologação
+    evidence:
+      path: evidence/refatoracao/<case>/setup/flag-config.md
+      type: markdown
+    rollback: Desabilitar flag; retornar baseline
+  - id: s4
+    name: Paridade funcional (API)
+    description: Comparar respostas baseline vs otimizada (schema, count, paginação, ordenação, agregações)
+    evidence:
+      path: evidence/refatoracao/<case>/paridade/api_diff.json
+      type: json
+    rollback: Pausar rollout; abrir sub-issue para ajuste da query
+  - id: s5
+    name: Revisão de plano/estratégia da query
+    description: Analisar EXPLAIN/EXPLAIN ANALYZE (custos, índices, scans, cardinalidade)
+    evidence:
+      path: evidence/refatoracao/<case>/db/
+      type: folder
+    rollback: Reverter hints/índices experimentais
+  - id: s6
+    name: Performance de API (A/B)
+    description: Rodar N requisições por variação e coletar p50/p95/p99, TTFB e erro%
+    evidence:
+      path: evidence/refatoracao/<case>/perf/api_ab_run.csv
+      type: csv
+    rollback: N/A
+  - id: s7
+    name: Performance no frontend
+    description: Medir LCP/tempo até dados visíveis e interações críticas na <pagina> (3–5 execuções por variação)
+    evidence:
+      path: evidence/refatoracao/<case>/perf/frontend_ab_run.csv
+      type: csv
+    rollback: N/A
+  - id: s8
+    name: Checagens de observabilidade
+    description: Auditar logs/erros/timeouts e consumo DB durante os testes
+    evidence:
+      path: evidence/refatoracao/<case>/observabilidade/notas.md
+      type: markdown
+    rollback: N/A
+  - id: s9
+    name: Consolidação e decisão
+    description: Comparar baseline vs otimizada e registrar Go/No-Go + plano de rollout/rollback
+    evidence:
+      path: evidence/refatoracao/<case>/decisao/resultado-final.md
+      type: markdown
+    rollback: Desligar flag e reimplantar baseline
+metadata:
+  tags: [otimizacao-query, testes-funcionais, performance-frontend, ab-test]
+  sla_minutes: 60
+  risk_level: M

@@ -1,0 +1,58 @@
+id: refatoracao_testes_funcionais_corretiva
+version: 1.0
+owner: Leonardo Trindade
+theme: refatoracao
+title: Testes Funcionais – Demanda Corretiva
+objective: Validar se a correção resolve o defeito reportado sem causar regressões.
+inputs:
+  - Ticket com descrição do defeito
+  - Branch corrigida em homologação
+  - Casos de teste derivados do defeito
+outputs:
+  - Evidências de execução
+  - Registro de aprovação ou reprovação
+acceptance:
+  - Defeito original não ocorre mais
+  - Funcionalidades relacionadas operam normalmente
+  - Evidências salvas em paths definidos
+  - Rollback documentado e testado
+steps:
+  - id: s1
+    name: Preparar ambiente de testes
+    description: Garantir que a versão corrigida está em homologação
+    evidence:
+      path: evidence/refatoracao/<case>/ambiente.txt
+      type: text
+    rollback: Restaurar versão anterior via pipeline/deploy
+  - id: s2
+    name: Reproduzir defeito na versão anterior
+    description: Validar que o erro ocorria antes da correção
+    evidence:
+      path: evidence/refatoracao/<case>/defeito-anterior.log
+      type: log
+    rollback: N/A
+  - id: s3
+    name: Executar caso de teste da correção
+    description: Seguir roteiro do ticket e validar defeito
+    evidence:
+      path: evidence/refatoracao/<case>/teste-correcao.log
+      type: log
+    rollback: Desfazer ação no sistema (exclusão/rollback de registro)
+  - id: s4
+    name: Executar testes de regressão mínima
+    description: Validar funcionalidades relacionadas
+    evidence:
+      path: evidence/refatoracao/<case>/regressao-checklist.md
+      type: markdown
+    rollback: Restaurar base de dados, se alterada
+  - id: s5
+    name: Registrar resultado final
+    description: Aprovar ou reprovar a correção
+    evidence:
+      path: evidence/refatoracao/<case>/resultado-final.md
+      type: markdown
+    rollback: Abrir novo ticket se falha persistir
+metadata:
+  tags: [teste-funcional, corretiva, homologacao]
+  sla_minutes: 60
+  risk_level: M
